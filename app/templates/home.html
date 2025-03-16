@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot - Lets Talk with Yourself</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Aleo:ital,wght@0,100..900;1,100..900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="chat-container">
+        <header class="chat-header">
+            <h4>A6: Let's Talk with Yourself - RAGBot</h4>
+        </header>
+
+        <div class="chat-box" id="chat-box">
+            {% if answer %}
+                <div class="chat-message bot">{{ answer }}</div>
+                {% if ref_list %}
+                    <div class="chat-message bot">
+                        <h4>Here's some documents relevant to this topic...</h4>
+                        <ul>
+                            {% for ref in ref_list %}
+                                <li><a href="{{ url_for('static', filename='documents/' + ref.ref_link) }}" target="_blank">{{ ref.ref_text }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+            {% endif %}
+        </div>
+
+        <div class="input-box">
+            <textarea id="user-input" placeholder="Type your message..." rows="3"></textarea>
+            <button id="send-btn">Send</button>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            function appendMessage(sender, message) {
+                let messageClass = sender === 'user' ? 'chat-message user' : 'chat-message bot';
+                $("#chat-box").append('<div class="' + messageClass + '">' + message + '</div>');
+                $("#chat-box").scrollTop($("#chat-box")[0].scrollHeight);
+            }
+
+            $("#send-btn").click(function() {
+                let userMessage = $("#user-input").val();
+                if (userMessage.trim() === "") return;
+
+                appendMessage('user', userMessage);  // Add only the user's message
+                $("#user-input").val("");  // Clear the input field
+
+                // Send user message to the Flask backend
+                $.ajax({
+                    type: "POST",
+                    url: "/",
+                    contentType: "application/json",
+                    data: JSON.stringify({ prompt_question: userMessage }),
+                    success: function(response) {
+                        appendMessage('bot', response.answer);  // Append bot response
+                        if (response.ref_list && response.ref_list.length > 0) {
+                            let refText = "<ul>";
+                            response.ref_list.forEach(function(ref) {
+                                refText += `<li><a href="${ref.ref_link}" target="_blank">${ref.ref_text}</a></li>`;
+                            });
+                            refText += "</ul>";
+                            appendMessage('bot', refText);
+                        }
+                    }
+                });
+            });
+
+            $("#user-input").keypress(function(event) {
+                if (event.which == 13 && !event.shiftKey) {
+                    event.preventDefault();
+                    $("#send-btn").click();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
