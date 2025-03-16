@@ -87,7 +87,7 @@ Here’s a table summarizing the limitations of the retriever and generator mode
 <a href="https://drive.google.com/file/d/1q6eV058XF1ocM1HKmgRMcOauFLtRoFEg/view?usp=sharing">Link to the application video</a>
 
 <p align="left">
-  <img src="./screenshots/Video.gif" width="50%">
+  <img src="./screenshots/Video.gif" width="80%">
 </p>
 
 #### **Below are 10 questions your chatbot should be able to answer:**
