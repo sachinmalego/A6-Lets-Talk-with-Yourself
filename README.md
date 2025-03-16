@@ -129,8 +129,7 @@ Here’s a table summarizing the limitations of the retriever and generator mode
 **Make sure that each question and corresponding answer is properly formatted in the JSON structure. This will be part of your deliverables. (0.5 point)**
 
 <h5><b>JSON Responses</b></h5>
-[!Link to JSON File](chatbot_responses.json)
-
+![JSON File](chatbot_responses.json)
 
 ```
 [
