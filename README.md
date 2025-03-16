@@ -114,15 +114,15 @@ Here’s a table summarizing the limitations of the retriever and generator mode
 **Submission Instructions:** For each question, your chatbot should generate a response. Please submit the question-answer pairs to your Github repository in the following JSON format:
 ```
 [
-{  
-"question": "How old are you?",  
-"answer": "Your answer here"  
-},  
-{  
-"question": "What is your highest level of education?",  
-"answer": "Your answer here"  
-},  
-...  
+    {  
+        "question": "How old are you?",  
+        "answer": "Your answer here"  
+    },  
+    {  
+        "question": "What is your highest level of education?",  
+        "answer": "Your answer here"  
+    },  
+    ...  
 ]
 ```
 
